@@ -20,21 +20,21 @@ class Window:
         self.__setup_main_window()
 
     def create_reset_button(self):
-        self.reset_button = tk.Button(self.__root, text="Reset", command=self.reset_list)
+        self.reset_button = tk.Button(self.__root, text="Reset", font=("Arial", 14), command=self.reset_list)
         self.reset_button.pack()
 
     def create_search_frame(self):
         search_frame = tk.Frame(self.__root)
         search_frame.pack(pady=10)
 
-        self.search_entry = tk.Entry(search_frame, width=30)
+        self.search_entry = tk.Entry(search_frame, width=30, font=("Arial", 14))
         self.search_entry.pack(side=tk.LEFT, padx=5)
 
-        search_button = tk.Button(search_frame, text="Search", command=self.perform_search)
+        search_button = tk.Button(search_frame, text="Search", font=("Arial", 14), command=self.perform_search, height=1)
         search_button.pack(side=tk.LEFT)
 
     def create_results_listbox(self):
-        self.results_listbox = tk.Listbox(self.__root, width=50)
+        self.results_listbox = tk.Listbox(self.__root, width=50, font=("Arial", 12))
         self.results_listbox.pack(pady=10)
 
     def perform_search(self):
@@ -84,7 +84,13 @@ class Window:
         self.results_listbox.delete(0, tk.END)  # Clear the listbox
         for record in records.records:  # Assuming self.records contains all records
         # Insert each record into the listbox
-            self.results_listbox.insert(tk.END, f"{record['Artist']} - {record['Record']}")
+            if isinstance(record, list):
+            # Assuming the list is in [Artist, Record] format
+                self.results_listbox.insert(tk.END, f"{record[0]} - {record[1]}")
+            elif isinstance(record, dict):
+                self.results_listbox.insert(tk.END, f"{record['Artist']} - {record['Record']}")
+            else:
+                print(f"Unexpected record format: {record}")
     
     def show_add_record_window(self):
         # Clear existing widgets
@@ -92,30 +98,29 @@ class Window:
             widget.destroy()
 
         # Create new widgets for adding a record
-        artist_label = tk.Label(self.__root, text="Artist:")
+        artist_label = tk.Label(self.__root, font=("Arial", 14), text="Artist:")
         artist_label.pack()
-        self.__artist_entry = tk.Entry(self.__root)
+        self.__artist_entry = tk.Entry(self.__root, font=("Arial", 14))
         self.__artist_entry.pack()
 
-        record_label = tk.Label(self.__root, text="Record:")
+        record_label = tk.Label(self.__root, font=("Arial", 14), text="Record:")
         record_label.pack()
-        self.__record_entry = tk.Entry(self.__root)
+        self.__record_entry = tk.Entry(self.__root, font=("Arial", 14))
         self.__record_entry.pack()
 
-        add_button = tk.Button(self.__root, text="Add Record", command=self.perform_add)
+        add_button = tk.Button(self.__root, text="Add Record", font=("Arial", 14), command=self.perform_add)
         add_button.pack()
 
-        back_button = tk.Button(self.__root, text="Back to Main", command=self.__setup_main_window)
+        back_button = tk.Button(self.__root, text="Back to Main", font=("Arial", 14), command=self.__setup_main_window)
         back_button.pack()
 
     def __setup_main_window(self):
         for widget in self.__root.winfo_children():
             widget.destroy()
-
         self.create_search_frame()
         self.create_results_listbox()
         self.create_reset_button()
-        back_button = tk.Button(self.__root, text="To Add GUI", command=self.show_add_record_window)
+        back_button = tk.Button(self.__root, text="To Add GUI", font=("Arial", 14), command=self.show_add_record_window)
         back_button.pack()
 
         self.__canvas = Canvas(self.__root, width=self.width, height=self.height)

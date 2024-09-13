@@ -5,11 +5,9 @@ def load_records():
         with open("rcords.json", "r") as file:
             return json.load(file)
     except FileNotFoundError:
-        return records
+        return []
 
 records = load_records()
-
-
 
 def save_records(records):
     with open("rcords.json", "w") as file:
@@ -35,5 +33,4 @@ def save_records(records):
 
 def add_to_records(records, artist, record):
     records.append([artist, record])
-    save_records(records)  # Save after each add
-    return records
+    save_records(records)
