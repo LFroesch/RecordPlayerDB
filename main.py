@@ -12,8 +12,9 @@ def main():
     title = win.get_title()
     print(f"Launching {title}")
     # fix enter to work for 2 different buttons depending on adding state or not
-    #win.search_entry.bind('<Return>', lambda event: win.perform_search())
-    #leave at end
+    # win.search_entry.bind('<Return>', lambda event: win.perform_search())
+
+    # leave at end
     win.run()
 
 if __name__ == "__main__":

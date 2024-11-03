@@ -5,6 +5,11 @@ Background Image
 
 Menu / Options
 
-Add Year / Rating / Album Search 
+Add Year / Rating / Genre /  Album Search 
 
 Add Random Record Function
+
+Fix Enter button
+
+treeview table delete option
+

@@ -56,10 +56,33 @@ class Window:
         record = self.__record_entry.get()
         if artist and record:
             result = records.add_to_records(records.records, artist, record)
-            if result:  # Assuming add_to_records returns True on success
-                print(f"Successfully added {artist} - {record} to the database")
+            if result == True:  # Assuming add_to_records returns True on success
+                print("-------------------")
+                print("Successfully added:")
+                print(f"Artist: {artist}")
+                print(f"Record: {record}")
+                print("to the database")
+                print("-------------------")
+                records.records = records.load_records()
             else:
                 print("Failed to add record to the database")
+        else:
+            print("Artist and record name cannot be empty")
+
+    def perform_del(self):
+        artist = self.__artist_entry.get()
+        record = self.__record_entry.get()
+        if artist and record:
+            result = records.del_from_records(records.records, artist, record)
+            if result == True:  # Assuming add_to_records returns True on success
+                print("-------------------")
+                print("Successfully deleted:")
+                print(f"Artist: {artist}")
+                print(f"Record: {record}")
+                print("from the database")
+                print("-------------------")
+            else:
+                print("Failed to delete record to the database")
         else:
             print("Artist and record name cannot be empty")
 
@@ -123,6 +146,53 @@ class Window:
         back_button = tk.Button(self.__root, text="To Add GUI", font=("Arial", 14), command=self.show_add_record_window)
         back_button.pack()
 
+        #back_button2 = tk.Button(self.__root, text="To Del GUI", font=("Arial", 14), command=self.show_del_record_window)
+        #back_button2.pack()
+
+        back_button3 = tk.Button(self.__root, text="Del", font=("Arial", 14), command=self.delete_selected)
+        back_button3.pack()
+
         self.__canvas = Canvas(self.__root, width=self.width, height=self.height)
         self.__canvas.pack(fill=tk.BOTH, expand=True)
         self.reset_list()
+
+    def show_del_record_window(self):
+        # Clear existing widgets
+        for widget in self.__root.winfo_children():
+            widget.destroy()
+
+        # Create new widgets for adding a record
+        artist_label = tk.Label(self.__root, font=("Arial", 14), text="Artist:")
+        artist_label.pack()
+        self.__artist_entry = tk.Entry(self.__root, font=("Arial", 14))
+        self.__artist_entry.pack()
+
+        record_label = tk.Label(self.__root, font=("Arial", 14), text="Record:")
+        record_label.pack()
+        self.__record_entry = tk.Entry(self.__root, font=("Arial", 14))
+        self.__record_entry.pack()
+
+        add_button = tk.Button(self.__root, text="Del Record", font=("Arial", 14), command=self.perform_del)
+        add_button.pack()
+
+        back_button = tk.Button(self.__root, text="Back to Main", font=("Arial", 14), command=self.__setup_main_window)
+        back_button.pack()
+
+    def delete_selected(self):
+        selected = self.results_listbox.curselection()  # Get selected index
+        if selected:  # Check if something is selected
+            item = self.results_listbox.get(selected)  # Get the text of selected item
+        # Now you'll need to parse this item to get artist and record
+        # How you split this depends on how you're displaying items in the listbox
+        # For example if displayed as "Artist - Record":
+            artist, record = item.split(" - ")  # Just an example format
+            if records.del_from_records(records.records, artist, record):
+                self.results_listbox.delete(selected)  # Remove from listbox
+                print("-------------------")
+                print("Successfully deleted:")
+                print(f"Artist: {artist}")
+                print(f"Record: {record}")
+                print("from the database")
+                print("-------------------")
+        else:
+            print("Nothing selected to delete")

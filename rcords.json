@@ -1,14 +1,10 @@
 [
   {
-    "Artist": "The Beatles",
-    "Record": "Abbey Road"
+    "Artist": "Lana Del Ray",
+    "Record": "Born To Die"
   },
   {
     "Artist": "Pink Floyd",
     "Record": "Dark Side of the Moon"
-  },
-  {
-    "Artist": "Lana Del Ray",
-    "Record": "Born To Die"
   }
 ]
