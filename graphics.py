@@ -13,7 +13,7 @@ class Window:
     def __init__(self, width, height):
         self.__root = Tk()
         self.__root.title('VinylDB')
-        self.__root.geometry(f"{width}x{height}+1920+0")
+        self.__root.geometry(f"{width}x{height}")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
 
         self.__root.configure(bg='#2c3e50')
@@ -348,25 +348,36 @@ class Window:
         scrollable_frame.bind("<Configure>", configure_scroll_region)
         canvas.bind("<Configure>", configure_scroll_region)
         
-        def _on_mousewheel_linux_down(event):
+        def _on_mousewheel(event):
+            """Cross-platform mouse wheel scrolling"""
             if hasattr(self, 'current_canvas') and self.current_canvas.winfo_exists():
-                self.current_canvas.yview_scroll(1, "units")
-            
-        def _on_mousewheel_linux_up(event):
-            if hasattr(self, 'current_canvas') and self.current_canvas.winfo_exists():
-                self.current_canvas.yview_scroll(-1, "units")
+                # Windows and macOS
+                if hasattr(event, 'delta') and event.delta:
+                    self.current_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+                # Linux
+                elif hasattr(event, 'num'):
+                    if event.num == 4:
+                        self.current_canvas.yview_scroll(-1, "units")
+                    elif event.num == 5:
+                        self.current_canvas.yview_scroll(1, "units")
         
-        self._mousewheel_up = _on_mousewheel_linux_up
-        self._mousewheel_down = _on_mousewheel_linux_down
+        # Store the event function
+        self._on_mousewheel = _on_mousewheel
         
         def on_enter(event):
-            self.__root.bind_all("<Button-4>", self._mousewheel_up)
-            self.__root.bind_all("<Button-5>", self._mousewheel_down)
+            # Bind for Windows/macOS
+            self.__root.bind_all("<MouseWheel>", self._on_mousewheel)
+            # Bind for Linux  
+            self.__root.bind_all("<Button-4>", self._on_mousewheel)
+            self.__root.bind_all("<Button-5>", self._on_mousewheel)
         
         def on_leave(event):
+            # Unbind all mouse wheel events
+            self.__root.unbind_all("<MouseWheel>")
             self.__root.unbind_all("<Button-4>")
             self.__root.unbind_all("<Button-5>")
         
+        # Bind to multiple widgets to ensure it works
         self.right_panel.bind("<Enter>", on_enter)
         self.right_panel.bind("<Leave>", on_leave)
         canvas_frame.bind("<Enter>", on_enter)
@@ -709,17 +720,28 @@ class Window:
         scrollable_frame.bind("<Configure>", configure_scroll_region)
         canvas.bind("<Configure>", configure_scroll_region)
         
-        def _on_mousewheel_linux_down(event):
-            canvas.yview_scroll(1, "units")
-            
-        def _on_mousewheel_linux_up(event):
-            canvas.yview_scroll(-1, "units")
+        def _on_mousewheel(event):
+            """Cross-platform mouse wheel scrolling for add record window"""
+            # Windows and macOS
+            if hasattr(event, 'delta') and event.delta:
+                canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+            # Linux
+            elif hasattr(event, 'num'):
+                if event.num == 4:
+                    canvas.yview_scroll(-1, "units")
+                elif event.num == 5:
+                    canvas.yview_scroll(1, "units")
         
         def on_enter(event):
-            self.__root.bind_all("<Button-4>", _on_mousewheel_linux_up)
-            self.__root.bind_all("<Button-5>", _on_mousewheel_linux_down)
+            # Bind for Windows/macOS
+            self.__root.bind_all("<MouseWheel>", _on_mousewheel)
+            # Bind for Linux  
+            self.__root.bind_all("<Button-4>", _on_mousewheel)
+            self.__root.bind_all("<Button-5>", _on_mousewheel)
         
         def on_leave(event):
+            # Unbind all mouse wheel events
+            self.__root.unbind_all("<MouseWheel>")
             self.__root.unbind_all("<Button-4>")
             self.__root.unbind_all("<Button-5>")
         
