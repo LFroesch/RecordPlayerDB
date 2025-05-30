@@ -1,15 +1,9 @@
-
-Add Delete Record Function
-
 Background Image
 
 Menu / Options
 
-Add Year / Rating / Genre /  Album Search 
-
-Add Random Record Function
-
 Fix Enter button
 
-treeview table delete option
+search by year / rating / genre etc
 
+add genre tag

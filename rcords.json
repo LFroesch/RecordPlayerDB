@@ -1,10 +1,18 @@
 [
   {
-    "Artist": "Lana Del Ray",
-    "Record": "Born To Die"
+    "Artist": "Lorde",
+    "Record": "Born to Die",
+    "Year": "",
+    "Rating": "",
+    "Notes": "",
+    "Price": ""
   },
   {
     "Artist": "Pink Floyd",
-    "Record": "Dark Side of the Moon"
+    "Record": "Dark Side of the Moon",
+    "Year": "",
+    "Rating": "",
+    "Notes": "",
+    "Price": ""
   }
 ]

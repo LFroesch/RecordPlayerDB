@@ -7,7 +7,7 @@ import records
 def main():
     win = Window(shared.screen_x, shared.screen_y)
     win.reset_list()
-    canvas = win.get_canvas()
+    #canvas = win.get_canvas()
     root = win.get_root()
     title = win.get_title()
     print(f"Launching {title}")

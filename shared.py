@@ -1,2 +1,2 @@
-screen_y = 400
-screen_x = 800
+screen_y = 650
+screen_x = 900
